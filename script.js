@@ -6,67 +6,92 @@ const AFF_ID = "17310760448";
 
 function buildAffLink(item) {
   const aff = "an_" + AFF_ID;
-  // Có số session -> tự dựng link aff của bạn
   if (/^\d+$/.test(String(item.sessionId))) {
     return "https://live.shopee.vn/share?from=live&session=" + item.sessionId
          + "?mmp_pid=" + aff
          + "&utm_source=" + aff
          + "&utm_medium=affiliates&utm_campaign=livecoin";
   }
-  // Dự phòng: nếu là link dài có sẵn an_ -> thay id
   const url = item.sessionId || item.shopId || "";
   return url.includes("an_") ? url.replace(/an_\d+/g, aff) : url;
 }
 // ========================
 
+let rawData = [];
+let currentSort = "time"; // "time" | "coin"
+let items = [];
+
 function formatCountdown(timeDifference) {
   if (timeDifference <= 0) return "Đã bắt đầu";
-
   const seconds = Math.floor((timeDifference / 1000) % 60);
   const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
   const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
   const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
   const parts = [];
   if (days > 0) parts.push(`${days} ngày`);
   if (hours > 0) parts.push(`${hours} giờ`);
   if (minutes > 0) parts.push(`${minutes} phút`);
   if (seconds >= 0) parts.push(`${seconds} giây`);
-
   return parts.join(" ");
 }
 
-let items = [];
+// Trạng thái dựa trên thời gian còn lại
+function statusInfo(diff) {
+  if (diff <= 60000) return { cls: "live", text: "🔴 SẮP MỞ" };
+  return { cls: "soon", text: "⏳ Sắp tới" };
+}
+
+// Thanh thống kê
+function renderStats(data) {
+  const count = data.length;
+  const maxCoin = data.reduce((m, x) => Math.max(m, Number(x.maxcoin) || 0), 0);
+  const elCount = document.getElementById("stat-count");
+  const elCoin = document.getElementById("stat-coin");
+  if (elCount) elCount.textContent = count;
+  if (elCoin) elCoin.textContent = maxCoin.toLocaleString("vi-VN");
+}
+
+function render() {
+  const data = [...rawData];
+  if (currentSort === "coin") {
+    data.sort((a, b) => (Number(b.maxcoin) || 0) - (Number(a.maxcoin) || 0));
+  } else {
+    data.sort((a, b) => a.startTime - b.startTime);
+  }
+
+  dataList.innerHTML = "";
+  items = data.map(item => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <div class="status-badge"></div>
+      <div class="shop-name">${item.userName}</div>
+      <div class="card-meta">
+        <span class="coin-section">${item.maxcoin} xu</span>
+      </div>
+      <div class="countdown" data-start-time="${item.startTime}"></div>
+      <div class="button-section">
+        <a href="${buildAffLink(item)}" target="_blank">Vào ngay 🔥</a>
+      </div>
+    `;
+    dataList.appendChild(card);
+    return {
+      countdownEl: card.querySelector(".countdown"),
+      statusEl: card.querySelector(".status-badge"),
+      startTime: item.startTime,
+      row: card
+    };
+  });
+  updateCountdowns();
+}
 
 async function fetchData() {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-
-    data.sort((a, b) => a.startTime - b.startTime);
-
-    dataList.innerHTML = "";
-    items = data.map((item, index) => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      card.innerHTML = `
-        <div class="top-row">
-          <div class="shop-name"> ${item.userName}</div>
-          <div class="coin-section">${item.maxcoin} xu</div>
-          <div class="button-section">
-            <a href="${buildAffLink(item)}" target="_blank">Vào ngay</a>
-          </div>
-        </div>
-        <div style=" display: flex; justify-content: space-between; width: 61%; ">
-          <div style=" font-size: 0.9em; color: #777; margin-top: 8px; font-weight: normal; text-align: center; ">${item.viewer_count}</div>
-          <div class="countdown" data-start-time="${item.startTime}"></div>
-        </div>
-      `;
-      dataList.appendChild(card);
-      return { element: card.querySelector(".countdown"), startTime: item.startTime, row: card };
-    });
-
-    updateCountdowns();
+    rawData = data;
+    renderStats(rawData);
+    render();
   } catch (error) {
     console.error("Lỗi khi lấy dữ liệu:", error);
   } finally {
@@ -75,11 +100,14 @@ async function fetchData() {
 }
 
 function updateCountdowns() {
-  const currentTime = Date.now();
+  const now = Date.now();
   items = items.filter(item => {
-    const timeDifference = item.startTime - currentTime;
-    if (timeDifference > 0) {
-      item.element.textContent = formatCountdown(timeDifference);
+    const diff = item.startTime - now;
+    if (diff > 0) {
+      item.countdownEl.textContent = formatCountdown(diff);
+      const s = statusInfo(diff);
+      item.statusEl.textContent = s.text;
+      item.statusEl.className = "status-badge " + s.cls;
       return true;
     } else {
       item.row.remove();
@@ -87,6 +115,16 @@ function updateCountdowns() {
     }
   });
 }
+
+// Nút lọc / sắp xếp
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentSort = btn.dataset.sort;
+    render();
+  });
+});
 
 fetchData().then(() => {
   setInterval(updateCountdowns, 1000);
