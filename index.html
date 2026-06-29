@@ -33,8 +33,28 @@
     <button class="filter-btn" data-sort="coin">💰 Xu cao nhất</button>
   </div>
 
+  <!-- Danh sách phiên -->
   <div id="data-list" class="data-list"></div>
-  <div id="loading" class="loading">Đang tải phiên live…</div>
+
+  <!-- Skeleton loading -->
+  <div id="skeleton" class="data-list">
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+    <div class="skel-card"></div>
+  </div>
+
+  <!-- Trạng thái rỗng -->
+  <div id="empty-state" class="empty-state" style="display:none;">
+    <div class="empty-icon">📭</div>
+    <p>Hiện chưa có phiên live nào, quay lại sau nhé!</p>
+  </div>
+
+  <footer class="site-footer">SănXuLive · Cập nhật liên tục</footer>
 
   <script src="script.js"></script>
 </body>
