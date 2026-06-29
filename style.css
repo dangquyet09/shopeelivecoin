@@ -322,3 +322,40 @@ body {
   color: var(--muted);
   border-top: 1px solid #e5e7eb;
 }
+/* ====== CTA NHÓM CỘNG ĐỒNG (trong hero) ====== */
+.hero-cta {
+  position: relative;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+}
+.hero-cta-text {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  opacity: 0.95;
+}
+.hero-social {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.20);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.social-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.30); }
+.social-btn i { font-size: 1rem; }
+.social-zalo { background: #0068ff; }   /* xanh Zalo */
+.social-tele { background: #229ed9; }   /* xanh Telegram */
