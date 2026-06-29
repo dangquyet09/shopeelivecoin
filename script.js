@@ -6,7 +6,7 @@ const AFF_ID = "17310760448";
 
 function toAff(originUrl) {
   if (!originUrl) return originUrl;
-  return "https://shope.ee/an_redir?origin_link="
+  return "https://s.shopee.vn/an_redir?origin_link="
        + encodeURIComponent(originUrl)
        + "&affiliate_id=" + AFF_ID
        + "&sub_id=livecoin";
