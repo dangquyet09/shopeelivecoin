@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
-  <!-- ⚠️ Đây là AdSense của TÁC GIẢ gốc - đổi sang ID của bạn hoặc xoá 2 dòng dưới -->
+  <!-- ⚠️ AdSense: thay bằng ID của bạn, hoặc xoá 2 dòng dưới nếu chưa có -->
   <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXX">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
 
@@ -15,14 +15,23 @@
 </head>
 <body>
 
-<header class="hero">
-  <span class="hero-badge"><i class="fa fa-bolt"></i> SHOPEE LIVE · SĂN XU</span>
-  <h1 class="hero-title">Săn Xu Live</h1>
-  <p class="hero-tagline">Tổng hợp phiên Shopee Live tặng xu — vào sớm, săn deal ngon</p>
+  <header class="hero">
+    <span class="hero-badge"><i class="fa fa-bolt"></i> SHOPEE LIVE · SĂN XU</span>
+    <h1 class="hero-title">Săn<span>Xu</span>Live</h1>
+    <p class="hero-tagline">Tổng hợp phiên Shopee Live tặng xu — vào sớm, săn deal ngon</p>
+  </header>
 
-</header>
+  <div class="notice"><i class="fa fa-exclamation-circle"></i> Nhớ theo dõi shop trước khi vào nhận xu</div>
 
-<div class="notice"><i class="fa fa-exclamation-circle"></i> Nhớ theo dõi shop trước khi vào nhận xu</div>
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num" id="stat-count">0</span><span class="stat-label">phiên đang chờ</span></div>
+    <div class="stat"><span class="stat-num" id="stat-coin">0</span><span class="stat-label">xu cao nhất</span></div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-sort="time">⏳ Sắp diễn ra</button>
+    <button class="filter-btn" data-sort="coin">💰 Xu cao nhất</button>
+  </div>
 
   <div id="data-list" class="data-list"></div>
   <div id="loading" class="loading">Đang tải phiên live…</div>
