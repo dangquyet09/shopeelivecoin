@@ -1,6 +1,18 @@
 const apiUrl = "https://script.google.com/macros/s/AKfycbxhd52vK5-MQ21Xg92JYKTpx3L_wOi9DNbKXJB_UWOy_DkjUTMGRDY1TQfZiksKzqudNA/exec";
 const dataList = document.getElementById("data-list");
 
+// ====== AFFILIATE ======
+const AFF_ID = "17310760448";
+
+function toAff(originUrl) {
+  if (!originUrl) return originUrl;
+  return "https://s.shopee.vn/an_redir?origin_link="
+       + encodeURIComponent(originUrl)
+       + "&affiliate_id=" + AFF_ID
+       + "&sub_id=livecoin";
+}
+// ========================
+
 function formatCountdown(timeDifference) {
   if (timeDifference <= 0) return "Đã bắt đầu";
 
@@ -30,14 +42,14 @@ async function fetchData() {
     items = data.map(item => {
       const card = document.createElement("div");
       card.classList.add("card");
-      
+
       const maxcoin = item.maxcoin === 0 ? "voucher" : item.maxcoin + "xu";
       card.innerHTML = `
         <div class="top-row">
           <div class="shop-name"> ${item.userName}</div>
           <div class="coin-section">${maxcoin}</div>
           <div class="button-section">
-            <button onclick="window.location.href='${item.sessionId}'">Vào ngay</button>
+            <button onclick="window.location.href='${toAff(item.sessionId)}'">Vào ngay</button>
           </div>
         </div>
         <div class="countdown" data-start-time="${item.startTime}"></div>
@@ -61,15 +73,14 @@ function updateCountdowns() {
     const timeDifference = item.startTime - currentTime;
     if (timeDifference > 0) {
       item.element.textContent = formatCountdown(timeDifference);
-      return true; // Giữ lại mục này
+      return true;
     } else {
-      item.row.remove(); // Xóa hàng khỏi DOM nếu thời gian đã hết
-      return false; // Loại bỏ mục này khỏi danh sách items
+      item.row.remove();
+      return false;
     }
   });
 }
 
-// Gọi fetch data khi trang load và cập nhật đếm ngược mỗi giây
 fetchData().then(() => {
   setInterval(updateCountdowns, 1000);
 });
