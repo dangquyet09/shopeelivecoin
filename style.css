@@ -229,3 +229,61 @@ body {
 @media (max-width: 360px) {
   .shop-name { font-size: 0.85rem; }
 }
+/* ====== THANH THỐNG KÊ ====== */
+.stats-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.stat {
+  flex: 1;
+  max-width: 160px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 10px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.stat-num { display: block; font-size: 1.4rem; font-weight: 800; color: var(--shopee); }
+.stat-label { font-size: 0.72rem; color: var(--muted); }
+
+/* ====== NÚT LỌC ====== */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.filter-btn {
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.filter-btn:hover { border-color: var(--shopee); color: var(--shopee); }
+.filter-btn.active {
+  background: linear-gradient(90deg, var(--shopee), var(--shopee-dark));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(238,77,45,0.3);
+}
+
+/* ====== BADGE TRẠNG THÁI ====== */
+.status-badge {
+  align-self: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.status-badge.live { background: #ffe5e0; color: #d73211; animation: pulse 1.2s infinite; }
+.status-badge.soon { background: #eef1f5; color: #6b7280; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
