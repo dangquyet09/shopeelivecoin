@@ -35,13 +35,11 @@ function formatCountdown(timeDifference) {
   return parts.join(" ");
 }
 
-// Trạng thái dựa trên thời gian còn lại
 function statusInfo(diff) {
   if (diff <= 60000) return { cls: "live", text: "🔴 SẮP MỞ" };
   return { cls: "soon", text: "⏳ Sắp tới" };
 }
 
-// Thanh thống kê
 function renderStats(data) {
   const count = data.length;
   const maxCoin = data.reduce((m, x) => Math.max(m, Number(x.maxcoin) || 0), 0);
@@ -49,6 +47,18 @@ function renderStats(data) {
   const elCoin = document.getElementById("stat-coin");
   if (elCount) elCount.textContent = count;
   if (elCoin) elCoin.textContent = maxCoin.toLocaleString("vi-VN");
+}
+
+function showSkeleton(show) {
+  const sk = document.getElementById("skeleton");
+  if (sk) sk.style.display = show ? "grid" : "none";
+}
+
+function toggleEmpty() {
+  const empty = document.getElementById("empty-state");
+  const hasItems = items.length > 0;
+  if (empty) empty.style.display = hasItems ? "none" : "block";
+  dataList.style.display = hasItems ? "grid" : "none";
 }
 
 function render() {
@@ -89,13 +99,13 @@ async function fetchData() {
   try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    rawData = data;
+    rawData = data || [];
     renderStats(rawData);
     render();
   } catch (error) {
     console.error("Lỗi khi lấy dữ liệu:", error);
   } finally {
-    document.getElementById("loading").style.display = "none";
+    showSkeleton(false);
   }
 }
 
@@ -114,9 +124,9 @@ function updateCountdowns() {
       return false;
     }
   });
+  toggleEmpty();
 }
 
-// Nút lọc / sắp xếp
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
