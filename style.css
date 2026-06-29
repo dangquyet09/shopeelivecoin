@@ -1,160 +1,164 @@
+:root {
+  --shopee: #ee4d2d;
+  --shopee-dark: #d73211;
+  --gold: #f0a500;
+  --bg: #f5f5f7;
+  --text: #1f2937;
+  --muted: #6b7280;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Be Vietnam Pro', -apple-system, 'Segoe UI', Roboto, sans-serif;
   text-align: center;
-  padding: 20px;
-  background-color: #f9f9f9;
+  padding: 16px;
+  background: var(--bg);
   margin: auto;
-  max-width: 500px;
+  max-width: 560px;
+  color: var(--text);
 }
 
 h1 {
-  color: #333;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 8px 0 4px;
+  background: linear-gradient(90deg, var(--shopee), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
+
+h5 {
+  font-weight: 500;
+  color: var(--muted);
+  margin: 0 0 18px;
+  font-size: 0.85rem;
+}
+
+/* Nút điều hướng (Túi quà / Xu ế) */
+.button {
+  display: inline-block;
+  padding: 9px 18px !important;
+  border-radius: 999px !important;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
 
 .data-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .card {
-  padding: 16px;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  border: 1px solid #eee;
   text-align: left;
+  transition: transform .15s ease, box-shadow .15s ease;
+  overflow: hidden;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(238,77,45,0.12); }
+
+/* Dải màu Shopee bên trái mỗi thẻ */
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--shopee), var(--gold));
 }
 
 .top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
 .shop-name {
-  max-width: 90px;
-  font-size: 1em;
-  color: #555;
-  font-weight: bold;
-    display: -webkit-box;        /* Sử dụng hộp flexbox cho trình duyệt hỗ trợ */
-    -webkit-box-orient: vertical; /* Định hướng theo chiều dọc */
-    -webkit-line-clamp: 2;      /* Giới hạn số dòng hiển thị */
-    overflow: hidden;            /* Ẩn phần văn bản bị cắt */
-    text-overflow: ellipsis;  
+  flex: 1;
+  min-width: 0;
+  font-size: 0.98rem;
+  color: var(--text);
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .coin-section {
-  background: #fff;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #f0a500;
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--gold);
+  background: #fff7e6;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
-.coin-section::after {
-  font-size: 1.1em;
-  margin-left: 5px;
-}
-
-.button-section a {
-  background-color: #4CAF50;
+.button-section a,
+.button-section button {
+  background: linear-gradient(90deg, var(--shopee), var(--shopee-dark));
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 8px 12px;
+  border-radius: 999px;
+  padding: 9px 16px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9em;
-  transition: background-color 0.3s ease;
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: inherit;
   text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(238,77,45,0.3);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.button-section a:hover,
+.button-section button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(238,77,45,0.45);
 }
 
-.button-section button:hover {
-  background-color: #4CAF50;
+/* Hàng dưới: lượt xem + đếm ngược */
+.card > div:last-child {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
+  width: 100% !important;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #eee;
 }
 
 .countdown {
-  font-size: 0.9em;
-  color: #777;
-  margin-top: 8px;
-  font-weight: normal;
-  text-align: center;
-}
-.shareArticle {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  padding: 15px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--shopee);
+  background: #fff1ee;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-top: 0 !important;
+  text-align: center !important;
 }
 
-.shareSocial {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  @media (max-width: 767px) {
-    flex-flow: column;
-  }
-  .socialTitle {
-    margin: 0 0 0 0;
-    @media (max-width: 767px) {
-      margin-bottom: 15px;
-      text-align: center;
-    }
-  }
-  .socialList {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: flex-start;
-    justify-content: center;
-    flex-flow: row wrap;
-    li {
-      margin: 5px;
-      &:first-child {
-        padding-left: 0;
-      }
-      a {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-        border-radius: 100%;
-        text-decoration: none;
-        background-color: #999;
-        color: #fff;
-        transition: .35s;
-        i {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform-origin: top left;
-          transform: scale(2) translate(-50%, -50%);
-          transition: .35s;
-        }
-        &:hover {
-          i {
-            transform: scale(2) translate(-50%, -50%);
-          }
-        }
-      }
-      &:nth-child(1) a {
-        background-color: #135cb6;
-      }
-      &:nth-child(2) a {
-        background-color: #2962ff;
-      }
-      &:nth-child(3) a {
-        background-color: #3268ff;
-      }
-      &:nth-child(4) a {
-        background-color: #111111;
-      }
-      &:nth-child(5) a {
-        background-color: #1FB381;
-      }
-    }
-  }
+.loading {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 24px 0;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  h1 { font-size: 1.25rem; }
+  .shop-name { font-size: 0.9rem; }
 }
