@@ -1,6 +1,24 @@
 const apiUrl = "https://script.google.com/macros/s/AKfycbyobr7LWkEQjy0Kvu-_eRoTgTG-aWEPC8Lk81l6pIYar85KIz1BoZfYijcp3zjghvYhPA/exec";
 const dataList = document.getElementById("data-list");
 
+// ====== AFFILIATE ======
+const AFF_ID = "17310760448";
+
+function buildAffLink(item) {
+  const aff = "an_" + AFF_ID;
+  // Có số session -> tự dựng link aff của bạn
+  if (/^\d+$/.test(String(item.sessionId))) {
+    return "https://live.shopee.vn/share?from=live&session=" + item.sessionId
+         + "?mmp_pid=" + aff
+         + "&utm_source=" + aff
+         + "&utm_medium=affiliates&utm_campaign=livecoin";
+  }
+  // Dự phòng: nếu là link dài có sẵn an_ -> thay id
+  const url = item.sessionId || item.shopId || "";
+  return url.includes("an_") ? url.replace(/an_\d+/g, aff) : url;
+}
+// ========================
+
 function formatCountdown(timeDifference) {
   if (timeDifference <= 0) return "Đã bắt đầu";
 
@@ -20,8 +38,6 @@ function formatCountdown(timeDifference) {
 
 let items = [];
 
-// Replace this part of JavaScript for rendering cards
-// Replace this part of JavaScript for rendering cards
 async function fetchData() {
   try {
     const response = await fetch(apiUrl);
@@ -38,7 +54,7 @@ async function fetchData() {
           <div class="shop-name"> ${item.userName}</div>
           <div class="coin-section">${item.maxcoin} xu</div>
           <div class="button-section">
-            <a href="${item.shopId}" target="_blank">Vào ngay</a>
+            <a href="${buildAffLink(item)}" target="_blank">Vào ngay</a>
           </div>
         </div>
         <div style=" display: flex; justify-content: space-between; width: 61%; ">
@@ -57,8 +73,6 @@ async function fetchData() {
     document.getElementById("loading").style.display = "none";
   }
 }
-
-
 
 function updateCountdowns() {
   const currentTime = Date.now();
