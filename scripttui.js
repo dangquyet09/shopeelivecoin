@@ -4,12 +4,9 @@ const dataList = document.getElementById("data-list");
 // ====== AFFILIATE ======
 const AFF_ID = "17310760448";
 
-function toAff(originUrl) {
-  if (!originUrl) return originUrl;
-  return "https://s.shopee.vn/an_redir?origin_link="
-       + encodeURIComponent(originUrl)
-       + "&affiliate_id=" + AFF_ID
-       + "&sub_id=livecoin";
+function toAff(url) {
+  if (!url) return url;
+  return url.replace(/(affiliate_id=)[^&]+/i, "$1" + AFF_ID);
 }
 // ========================
 
@@ -63,7 +60,7 @@ async function fetchData() {
     console.error("Lỗi khi lấy dữ liệu:", error);
   } finally {
     document.getElementById("koco").style.display = items.length === 0 ? "block" : "none";
-    document.getElementById("loading").style.display = "none"; // Ẩn loading
+    document.getElementById("loading").style.display = "none";
   }
 }
 
